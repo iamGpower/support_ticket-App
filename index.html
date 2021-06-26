@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+			integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<title>Ticket_System</title>
+		<style>
+			.title {
+				color: #00aeef;
+				font-weight: 700;
+			}
+
+			hr {
+				border-top: 3px solid #e1e1e1;
+			}
+
+			.success,
+			.error,
+			.info {
+				text-align: center;
+				padding: 8px;
+				margin: 8px 0 16px 0;
+				border-radius: 4px;
+			}
+
+			.success {
+				color: #155724;
+				background-color: #d4edda;
+				border-color: #c3e6cb;
+			}
+
+			.error {
+				color: #721c24;
+				background-color: #f8d7da;
+				border-color: #f5c6cb;
+			}
+
+			.info {
+				color: #004085;
+				background-color: #cce5ff;
+				border-color: #b8daff;
+			}
+
+			.btn {
+				margin-top: 32px;
+			}
+
+			.delete {
+				padding: 0 4px;
+				color: #721c24;
+				background-color: #f8d7da;
+				border-radius: 5px;
+				cursor: pointer;
+				text-decoration: none;
+				vertical-align: middle;
+				text-align: center;
+			}
+
+			.ticket-item input {
+				width: 100%;
+			}
+
+			.ticket-item select {
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h3 class="title">Create Ticket</h3>
+			<hr />
+			<form id="ticket-form">
+				<div class="row">
+					<div class="six columns ticket-item">
+						<label for="full-name">Full Name</label>
+						<input
+							type="text"
+							id="full-name"
+							class="u-medium-width"
+							placeholder="Enter your full name"
+						/>
+					</div>
+					<div class="four columns ticket-item">
+						<label for="phone">Phone Number</label>
+						<input type="number" id="phone" placeholder="xxxx - xxx - xxxx" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="six columns ticket-item">
+						<label for="email">Email</label>
+						<input
+							type="email"
+							id="email"
+							class="u-medium-width"
+							placeholder="someone@example.com"
+						/>
+					</div>
+					<div class="four columns ticket-item">
+						<label for="unit">Dept / Unit</label>
+						<select id="unit">
+							<option value="" disabled selected>Select your Department</option>
+							<option value="Facility">Facility</option>
+							<option value="Finance">Finance</option>
+							<option value="IT">IT</option>
+							<option value="Human Resource">Human Resource</option>
+							<option value="Sales">Sales</option>
+							<option value="Marketing">Marketing</option>
+							<option value="Management">Management</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="six columns ticket-item">
+						<label for="topic">Help Topic</label>
+						<select id="topic">
+							<option value="" disabled selected>Choose a help topic</option>
+							<option value="access-right">Access Rights</option>
+							<option value="network-issue">Network Issue</option>
+							<option value="print-problem">Print Problem</option>
+							<option value="network-issue">Network Issue</option>
+							<option value="remote-support">Remote Support</option>
+						</select>
+					</div>
+					<div class="four columns ticket-item">
+						<label for="piority">Piority</label>
+						<select id="piority">
+							<option value="" disabled selected>
+								What's the request Piority
+							</option>
+							<option value="low">Low</option>
+							<option value="medium">Medium</option>
+							<option value="high">High</option>
+						</select>
+					</div>
+				</div>
+				<div>
+					<input class="button-primary btn" type="submit" value="Create" />
+				</div>
+			</form>
+		</div>
+
+		<div class="container">
+			<table class="u-full-width" id="ticket-table">
+				<thead>
+					<tr>
+						<th>Full Name</th>
+						<th>Department</th>
+						<th>Request Log</th>
+						<th>Piority</th>
+						<th>Assigned To</th>
+						<th>Actions</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="ticket-queue"></tbody>
+			</table>
+		</div>
+		<!-- <script src="app.js"></script> -->
+		<script src="es6App.js"></script>
+	</body>
+</html>
