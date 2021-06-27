@@ -1,19 +1,21 @@
 class Ticket {
 	constructor(
-		email,
+		id,
 		fullName,
 		phone,
+		email,
 		unit,
-		piority,
 		topic,
+		piority,
 		assignee = 'Support Level 1',
 	) {
-		this.email = email;
+		this.id = id;
 		this.fullName = fullName;
 		this.phone = phone;
+		this.email = email;
 		this.unit = unit;
-		this.piority = piority;
 		this.topic = topic;
+		this.piority = piority;
 		this.assignee = assignee;
 	}
 }
@@ -24,6 +26,7 @@ class UI {
 		const tableList = document.getElementById('ticket-queue');
 		const row = document.createElement('tr');
 		row.innerHTML = `
+    <td>${ticket.id.toUpperCase()}</td>
     <td>${ticket.fullName}</td>
     <td>${ticket.unit}</td>
     <td>${ticket.topic}</td>
@@ -63,33 +66,68 @@ class UI {
 }
 
 class DB {
-	static getTickets() {}
+	static getTickets() {
+		let tickets;
+		if (localStorage.getItem('tickets') === null) {
+			tickets = [];
+		} else {
+			tickets = JSON.parse(localStorage.getItem('tickets'));
+		}
 
-	static deleteTicket() {}
+		return tickets;
+	}
 
-	static displayTickets() {}
+	static deleteTicket(value) {
+		const tickets = DB.getTickets();
+		console.log(tickets);
+		tickets.forEach(function (ticket, index) {
+			if (ticket.id === value.toLowerCase()) {
+				tickets.splice(index, 1);
+			}
+		});
+		localStorage.setItem('tickets', JSON.stringify(tickets));
+	}
 
-	static addTicket() {}
+	static displayTickets() {
+		const tickets = DB.getTickets();
+		tickets.forEach(function (book) {
+			const ui = new UI();
+			ui.createTicket(book);
+		});
+	}
+
+	static addTicket(ticket) {
+		const tickets = DB.getTickets();
+		console.log(ticket);
+		tickets.push(ticket);
+		// console.log(tickets);
+		localStorage.setItem('tickets', JSON.stringify(tickets));
+	}
 }
+
+// Display tickets on page load
+document.addEventListener('DOMContentLoaded', DB.displayTickets);
 
 // Create ticket
 document.getElementById('ticket-form').addEventListener('submit', function (e) {
-	const email = document.getElementById('email').value;
+	const id = random(6);
 	const fullName = document.getElementById('full-name').value;
 	const phone = document.getElementById('phone').value;
+	const email = document.getElementById('email').value;
 	const unit = document.getElementById('unit').value;
-	const piority = document.getElementById('piority').value;
 	const topic = document.getElementById('topic').value;
+	const piority = document.getElementById('piority').value;
 	e.preventDefault();
 
 	// Instantiate new ticket
-	const ticket = new Ticket(email, fullName, phone, unit, piority, topic);
+	const ticket = new Ticket(id, fullName, phone, email, unit, topic, piority);
 
 	// Instantiate UI element
 	const ui = new UI();
 
 	// Validation
 	if (
+		ticket.id !== '' &&
 		ticket.fullName !== '' &&
 		ticket.phone !== '' &&
 		ticket.unit !== '' &&
@@ -97,9 +135,12 @@ document.getElementById('ticket-form').addEventListener('submit', function (e) {
 		ticket.piority !== ''
 	) {
 		ui.createTicket(ticket);
+
 		// Adding ticket to local Storage
 		DB.addTicket(ticket);
+
 		ui.notify('Ticket successfully created', 'success');
+
 		ui.clearForm();
 	} else {
 		ui.notify(
@@ -107,11 +148,22 @@ document.getElementById('ticket-form').addEventListener('submit', function (e) {
 			'error',
 		);
 	}
+
+	function random(length = 8) {
+		return Math.random().toString(16).substr(2, length);
+	}
 });
 
 // Delete ticket
 document.getElementById('ticket-table').addEventListener('click', function (e) {
 	const ui = new UI();
 	ui.deleteTicket(e);
+
+	// Remove ticket from local storage
+	DB.deleteTicket(
+		e.target.parentElement.parentElement.firstChild.nextElementSibling
+			.innerText,
+	);
+
 	ui.notify('Ticket item successfully deleted', 'info');
 });
